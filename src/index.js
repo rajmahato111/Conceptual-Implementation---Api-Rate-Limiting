@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const bodyParser = require("body-parser");
-const posts= require("./initialData");
+const posts = require("./initialData");
 const port = 3000
 app.use(express.urlencoded());
 
@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 // your code goes here
 let numberOfAPICall=0;
-let intialMax=0;
+let intialMax=null;
 
 app.get('/api/posts', (req,res) => {
 if(numberOfAPICall >= 5){
@@ -22,8 +22,9 @@ res.status(429).send({message: "Exceed Number of API Calls"});
 return;
 }
 const ParsedMax = Number(req.query.max || 10);
-const max = ParsedMax>20 ? 10: ParsedMax;
+const max = ParsedMax > 20 ? 10: ParsedMax;
 let finalMax = max;
+
 if(intialMax !== null){
     finalMax = Math.min(finalMax,intialMax);
 }
